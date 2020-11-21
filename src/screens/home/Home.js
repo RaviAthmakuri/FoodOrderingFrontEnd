@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import Header from '../../common/header/Header';
-import Header from '../../common/Header';
+import Header from '../../common/header/Header';
 
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
@@ -17,51 +17,51 @@ import '@fortawesome/fontawesome-svg-core';
 
 import './Home.css';
 
-// Custom Styles to over ride material ui default styles
+
 const styles = (theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper
   },
 
-  grid: { //style for the grid component
+  grid: { 
     "padding": "20px",
     "margin-left": "0.5%",
     "margin-right": "0.5%",
     transform: 'translateZ(0)',
     cursor: 'pointer',
   },
-  gridCard: { //Style for the Grid card
-    '@media (min-width: 1200px)': { //Making the code responsive to different screens
+  gridCard: { 
+    '@media (min-width: 1200px)': { 
 
       'flex-grow': '0',
       'max-width': '25%',
       'flex-basis': '25%',
     },
 
-    '@media (min-width: 960px) and (max-width:1200px)': { //Making the code responsive to different screens
+    '@media (min-width: 960px) and (max-width:1200px)': { 
       'flex-grow': '0',
       'max-width': '33%',
       'flex-basis': '33%',
     },
   },
 
-  card: { //Style for the card and responsive code for different screen size
+  card: { 
     height: "500px",
-    '@media (min-width: 1300px)': { //Making the code responsive to different screens
+    '@media (min-width: 1300px)': { 
       height: "500px",
     },
-    '@media (min-width: 960px) and (max-width:1300px)': { //Making the code responsive to different screens
+    '@media (min-width: 960px) and (max-width:1300px)': { 
       height: "375px",
     }
   },
 
-  media: { // style for the image in the card
+  media: { 
     height: "40%",
     width: "100%",
-    // paddingTop: '56.25%', // 16:9
+   
   },
-  title: { //Style for the Title in the Card
+  title: { 
     "font-size": "25px",
     '@media (min-width: 1300px)': {
       "font-size": "40px",
@@ -73,7 +73,7 @@ const styles = (theme => ({
       "font-size": "40px",
     }
   },
-  categories: { //Style for the categories in the card
+  categories: { 
     "font-size": "16px",
     '@media (min-width: 1300px)': {
       "font-size": "22px",
@@ -87,7 +87,7 @@ const styles = (theme => ({
   },
 
 
-  cardContent: { // Styles for the card content
+  cardContent: { 
     "padding": "10px",
     "margin-left": "20px",
     "margin-right": "20px",
@@ -95,7 +95,7 @@ const styles = (theme => ({
     "display": "flex",
     "align-items": "center",
   },
-  cardActionArea: { //Style for the Card action area button
+  cardActionArea: { 
     "display": "flex",
     "height": "100%",
     "flex-direction": "column",
@@ -106,7 +106,6 @@ const styles = (theme => ({
 
 }))
 
-// Creating Home class component to render the home page as per the design
 class Home extends Component {
   constructor() {
     super()
@@ -116,9 +115,6 @@ class Home extends Component {
     }
   }
 
-  //This Method is called when the components are mounted.
-  //This method inturn calls the api to get all the restaurants in the data base and then sets the state of the restaurant
-  //Re-renders the page with the updated restaurant details.
   componentDidMount() {
     let data = null;
     let xhrRestaurant = new XMLHttpRequest();
@@ -131,12 +127,12 @@ class Home extends Component {
         });
       }
     })
-    xhrRestaurant.open("GET", this.props.baseUrl + "restaurant") // Getting all data from the restaurant endpoint.
+    xhrRestaurant.open("GET", this.props.baseUrl + "restaurant") 
     xhrRestaurant.send(data)
   }
 
 
-  //This method is called from the header when the search box is activated and the page is needed to be updated with the new restaurant list.
+  
   updateSearchRestaurant = (searchRestaurant, searchOn) => {
     let allRestaurantData = [];
     if (searchOn) {
@@ -163,25 +159,23 @@ class Home extends Component {
   }
 
 
-  //This Method Handles the click on the restaurant card.
-  //It takes the restaurant id as the Parameter and then pushes the restaurantDetails page
+
   restaurantCardClicked = (restaurantId) => {
     this.props.history.push('/restaurant/' + restaurantId);
   }
 
   render() {
-    // Styles are stored in the const classes
+ 
     const { classes } = this.props;
     return (
         <div>
-          {/* Rendering the Header Component */}
+       
           <Header baseUrl={this.props.baseUrl} showHeaderSearchBox={true} updateSearchRestaurant={this.updateSearchRestaurant}></Header>
           <div className="flex-container">
             <Grid container spacing={3} wrap="wrap" alignContent="center" className={classes.grid}>
-              {/* Restaurant array map method is called and for each item in the array a card is rendered with the details. */}
+            
               {this.state.restaurant !== null ? this.state.restaurant.map(restaurant => (
-                      //Grid Used to create columns as per the screen size
-                      //Card used to show the restaurant details.
+     
                       <Grid key={restaurant.id} item xs={12} sm={6} md={3} className={classes.gridCard}>
                         <Card className={classes.card}>
                           <CardActionArea className={classes.cardActionArea} onClick={() => this.restaurantCardClicked(restaurant.id)}>

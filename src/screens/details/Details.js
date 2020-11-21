@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Header from '../../common/Header';
+import Header from '../../common/header/Header';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, CardContent } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
