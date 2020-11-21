@@ -326,6 +326,7 @@ class Header extends Component {
       })
       xhrLogin.open("POST", this.props.baseUrl + "customer/login");
       xhrLogin.setRequestHeader("Authorization", "Basic " + window.btoa(this.state.loginContactNo + ":" + this.state.loginPassword));
+      console.log(window.btoa(this.state.loginContactNo + ":" + this.state.loginPassword));
       xhrLogin.setRequestHeader("Content-Type", "application/json");
       xhrLogin.setRequestHeader("Cache-Control", "no-cache");
       xhrLogin.send(dataLogin);
@@ -429,13 +430,13 @@ class Header extends Component {
       emailRequired = "dispBlock";
       signUpFormValid = false;
     }
-    if (this.state.email !== "") { //Checking for the email format
+    // if (this.state.email !== "") { //Checking for the email format
 
-      if (!(/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w+)+$/.test(this.state.email))) {
-        invalidEmail = "dispBlock"
-        signUpFormValid = false;
-      }
-    }
+    //   if (!(/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w+)+$/.test(this.state.email))) {
+    //     invalidEmail = "dispBlock"
+    //     signUpFormValid = false;
+    //   }
+    // }
     if (this.state.signUpContactNo === "") { // Checking for the contact not empty
       signUpContactNoRequired = "dispBlock";
       signUpFormValid = false;
@@ -558,7 +559,7 @@ class Header extends Component {
         <div>
           <header className="app-header">
             <FastfoodIcon className="app-logo" fontSize="large" htmlColor="white" />
-            {/* {this.props.showHeaderSearchBox === true && */}
+            {this.props.showHeaderSearchBox === true &&
             <span className="header-searchbox">
                             <Input className={classes.searchText}
                                    startAdornment={
@@ -568,7 +569,7 @@ class Header extends Component {
                                    }
                                    fullWidth={true} placeholder="Search by Restaurant Name" onChange={this.inputSearchChangeHandler} />
                         </span>
-            {/* } */}
+            }
 
             {/* Checks for loggedIn if not then displays the login button else profile button */}
 
