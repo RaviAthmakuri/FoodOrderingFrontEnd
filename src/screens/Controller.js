@@ -5,23 +5,20 @@ import Details from './details/Details';
 import Checkout from './checkout/Checkout';
 import Profile from './profile/Profile';
 
-
-
-//Creating controller class for easy routing the pages
 class Controller extends Component{
   constructor(){
     super()
-    this.baseUrl = "http://localhost:8080/api/" //setting the baseUrl of the api
+    this.baseUrl = "http://localhost:8080/api/" //baseUrl 
   }
 
   render(){
     return(
         <Router>
           <div className = 'main-conatiner'>
-            <Route exact path = '/' render={(props) => <Home {...props} baseUrl = {this.baseUrl}/>}/> {/* Route to home Page */ }
-            <Route path='/restaurant/:id' render={(props) => <Details {...props} baseUrl={this.baseUrl} />} /> {/* Route to restaurant details Page */}
-            <Route path='/profile' render={(props) => <Profile {...props} baseUrl={this.baseUrl} />} /> {/* Route to Profile Page */}
-            <Route path='/checkout' render={(props) => <Checkout {...props} baseUrl={this.baseUrl} />} /> {/* Route to Checkout Page */}
+            <Route exact path = '/' render={(props) => <Home {...props} baseUrl = {this.baseUrl}/>}/> {/* home Page */ }
+            <Route path='/restaurant/:id' render={(props) => <Details {...props} baseUrl={this.baseUrl} />} /> {/*restaurant details Page */}
+            <Route path='/profile' render={(props) => <Profile {...props} baseUrl={this.baseUrl} />} /> {/* Profile Page */}
+            <Route path='/checkout' render={(props) => <Checkout {...props} baseUrl={this.baseUrl} />} /> {/* Checkout Page */}
           </div>
         </Router>
 
