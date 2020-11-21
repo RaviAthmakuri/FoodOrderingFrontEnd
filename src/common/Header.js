@@ -23,47 +23,48 @@ import { FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 import './Header.css';
 
 
+// Custom Styles to over ride material ui default styles
 const styles = (theme => ({
-  searchText: { 
+  searchText: { //Style for Search box
     'color': 'white',
     '&:after': {
       borderBottom: '2px solid white',
     }
   },
-  loginButton: { 
+  loginButton: { //Style for Login Button
     "font-weight": 400,
     "margin":"8px 8px 8px 8px"
 
   },
-  formButton: { 
+  formButton: { //Style for the Form Buttons
     "font-weight": 400,
   },
-  tab: { 
+  tab: { // Tab Styling
     "font-weight": 400,
   },
-  formControl: { 
+  formControl: { // Form Control Styling
     "width": "80%",
   },
-  profileButton: {
+  profileButton: { // Profile Button Styling
     color: "#c2c2c2",
     "text-transform": "none",
     "font-weight": 400,
     "padding":"8px 8px 8px 8px",
   },
-  menuItems: {  
+  menuItems: {  //Style for the menu items
     "text-decoration": "none",
     "color": "black",
     "text-decoration-underline": "none",
     "padding-top": "0px",
     "padding-bottom": "0px",
   },
-  menuList: { 
+  menuList: { //Styling for the menulist component
     padding: "0px"
   }
 
 
 }))
-const customStyles = { 
+const customStyles = { // Style for the Modal
   content: {
     top: '50%',
     left: '50%',
@@ -74,7 +75,7 @@ const customStyles = {
   }
 };
 
-
+//Functional TabContainer Component to be used in the class
 const TabContainer = function (props) {
   return (
       <Typography component="div" style={{ padding: '0px', textAlign: 'center' }}>
@@ -88,6 +89,7 @@ TabContainer.propTypes = {
 }
 
 
+// Creating Header class component to render the Header as per the design
 class Header extends Component {
   constructor() {
     super();
@@ -126,18 +128,21 @@ class Header extends Component {
   }
 
 
- 
+  // Method handles the close of the modal
   closeModalHandler = () => {
     this.setState({
       ...this.state,
       isModalOpen: false
     })
-  
+    //Changing badge visibility in the details page if login clicked in details page
     if(this.props.changeBadgeVisibility){
       this.props.changeBadgeVisibility();
     }
   }
 
+  //This method is called when the login button in the header is clicked.
+  //Initiates all the variable used in the modal to default.
+  //Open the modal containing login and sign tabs.
   loginButtonClickHandler = () => {
     this.setState({
       ...this.state,
@@ -164,24 +169,26 @@ class Header extends Component {
       contactHelpText: "dispNone",
     })
 
+    //Changing badge visibility in the details page if login clicked in details page
     if(this.props.changeBadgeVisibility){
       this.props.changeBadgeVisibility();
     }
   }
 
-  
+  //This method is called to open and close the menu
   openMenu = () => this.setState({
     ...this.state,
     menuIsOpen: !this.state.menuIsOpen
   })
 
+  //This method is called when profile button is clicked to show the menu
   profileButtonClickHandler = (event) => {
     this.state.anchorEl ? this.setState({ anchorEl: null }) : this.setState({ anchorEl: event.currentTarget });
     this.openMenu();
   };
 
 
-
+  //This method is called when the input in contact No is changed.
   inputLoginContactNoChangeHandler = (event) => {
     this.setState({
       ...this.state,
@@ -189,7 +196,7 @@ class Header extends Component {
     })
   }
 
-
+  //This method is called when the input in Password is changed.
   inputLoginPasswordChangeHandler = (event) => {
     this.setState({
       ...this.state,
@@ -197,7 +204,7 @@ class Header extends Component {
     })
   }
 
-
+  //This method is called when the input in First name is changed.
   inputFirstNameChangeHandler = (event) => {
     this.setState({
       ...this.state,
@@ -205,6 +212,7 @@ class Header extends Component {
     })
   }
 
+  //This method is called when the input in Last Name  is changed.
   inputLastNameChangeHandler = (event) => {
     this.setState({
       ...this.state,
@@ -212,6 +220,7 @@ class Header extends Component {
     })
   }
 
+  //This method is called when the input in Email is changed.
   inputEmailChangeHandler = (event) => {
     this.setState({
       ...this.state,
@@ -219,7 +228,7 @@ class Header extends Component {
     })
   }
 
-
+  //This method is called when the input in Signup Password is changed.
   inputSignUpPasswordChangeHandler = (event) => {
     this.setState({
       ...this.state,
@@ -227,6 +236,7 @@ class Header extends Component {
     })
   }
 
+  //This method is called when the input in sign up contact No is changed.
   inputSignUpContactNoChangeHandler = (event) => {
     this.setState({
       ...this.state,
@@ -234,6 +244,8 @@ class Header extends Component {
     })
   }
 
+  //This method is called when the input in Search Box is changed.
+  //This in turn calls the function updateSearchRestaurant in the home page to update the searched restaurant list.
   inputSearchChangeHandler = (event) => {
     let searchOn = true
     if (! (event.target.value === "")) {
@@ -262,15 +274,20 @@ class Header extends Component {
   }
 
 
+  //This method is called to handle the change in the tabs.
   tabsChangeHandler = (event, value) => {
     this.setState({
       value
     });
   }
-
+  //This method handles the click on login button in the login modal
+  //This method calls the login api and sends the login details as required by the endpoint.
+  //If the login is successful then adds the access-token,uuid and customer name to the session storage for further use.
+  //On successful login snackbar message is shown.
   loginClickHandler = () => {
 
-    
+    //Checking if the details entered is valid only then the api call is made
+    if (this.handleLoginFormValidation()) {
       let dataLogin = null;
       let xhrLogin = new XMLHttpRequest();
       let that = this;
@@ -288,8 +305,8 @@ class Header extends Component {
               snackBarMessage: "Logged in successfully!",
               snackBarOpen: true,
             })
-            that.closeModalHandler(); 
-          } else if (xhrLogin.status === 401) {  
+            that.closeModalHandler(); //close th modal on successful login
+          } else if (xhrLogin.status === 401) {  //Checking for the error and showing the corresponding message.
             let loginResponse = JSON.parse(this.responseText);
             let notRegisteredContact = "dispNone"
             let invalidPassword = "dispNone"
@@ -309,7 +326,6 @@ class Header extends Component {
       })
       xhrLogin.open("POST", this.props.baseUrl + "customer/login");
       xhrLogin.setRequestHeader("Authorization", "Basic " + window.btoa(this.state.loginContactNo + ":" + this.state.loginPassword));
-      console.log(window.btoa(this.state.loginContactNo + ":" + this.state.loginPassword));
       xhrLogin.setRequestHeader("Content-Type", "application/json");
       xhrLogin.setRequestHeader("Cache-Control", "no-cache");
       xhrLogin.send(dataLogin);
@@ -317,20 +333,22 @@ class Header extends Component {
 
   }
 
+  //This method is called to validate the login form
+  //If all the parameters are right then returns true for the api call to be made if not displays the relevant error message.
   handleLoginFormValidation = () => {
     let loginContactNoRequired = "dispNone";
     let loginPasswordRequired = "dispNone";
     let inValidLoginContact = "dispNone";
     let isFormValid = true;
-    if (this.state.loginContactNo === "") {
+    if (this.state.loginContactNo === "") { //check for contact not empty
       loginContactNoRequired = "dispBlock";
       isFormValid = false;
     }
-    if (this.state.loginPassword === "") { 
+    if (this.state.loginPassword === "") { //Check for password not empty
       loginPasswordRequired = "dispBlock"
       isFormValid = false;
     }
-    if (this.state.loginContactNo !== "") { 
+    if (this.state.loginContactNo !== "") { //Check for contact format
       var contactNo = "[7-9][0-9]{9}";
       if (!this.state.loginContactNo.match(contactNo)) {
         inValidLoginContact = "dispBlock"
@@ -345,11 +363,15 @@ class Header extends Component {
     return (isFormValid);
   }
 
- 
+  //This method is called to sign up the customer when the sign up button from the sign up modal is clicked
+  //This method calls the sign up api and sends the data as required by the endpoint
+  //If sign up is successful move to login modal for logging if not then displays relevant error message.
+  //On successful sign up snackBar message is displayed
   signUpClickHandler = () => {
 
+    //Checking for the form validation
     if (this.signUpFormValidation()) {
-      let dataSignUp = JSON.stringify({ 
+      let dataSignUp = JSON.stringify({ //Creating data for the post endpoint.
         "contact_number": this.state.signUpContactNo,
         "email_address": this.state.email,
         "first_name": this.state.firstName,
@@ -369,7 +391,7 @@ class Header extends Component {
               snackBarOpen: true,
             })
           }
-          if (xhrSignUp.status === 400) { 
+          if (xhrSignUp.status === 400) { //checking if error to display the error message
             let responseData = JSON.parse(this.responseText)
             if (responseData.code === 'SGR-001') {
               that.setState({
@@ -387,7 +409,8 @@ class Header extends Component {
     }
   }
 
-
+  //This Method is called to check the sign up form valid.
+  //This Method return true if all the data are in right format and valid otherwise displays error message.
   signUpFormValidation = () => {
     let firstNameRequired = "dispNone";
     let emailRequired = "dispNone";
@@ -398,33 +421,38 @@ class Header extends Component {
     let invalidEmail = "dispNone";
     let signUpFormValid = true;
 
-    if (this.state.firstName === "") { 
+    if (this.state.firstName === "") { //Checking for the first name not empty
       firstNameRequired = "dispBlock";
       signUpFormValid = false;
     }
-    if (this.state.email === "") { 
+    if (this.state.email === "") { //Checking for the email not empty
       emailRequired = "dispBlock";
       signUpFormValid = false;
     }
-   }
+    // if (this.state.email !== "") { //Checking for the email format
 
-    if (this.state.signUpContactNo === "") { 
+    //   if (!(/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w+)+$/.test(this.state.email))) {
+    //     invalidEmail = "dispBlock"
+    //     signUpFormValid = false;
+    //   }
+    // }
+    if (this.state.signUpContactNo === "") { // Checking for the contact not empty
       signUpContactNoRequired = "dispBlock";
       signUpFormValid = false;
     }
-    if (this.state.signUpContactNo !== "") { 
+    if (this.state.signUpContactNo !== "") { //Checking for contact format
       var contactNo = "[7-9][0-9]{9}";
       if (!this.state.signUpContactNo.match(contactNo)) {
         contactHelpText = "dispBlock"
         signUpFormValid = false;
       }
     }
-    if (this.state.signUpPassword === "") { 
+    if (this.state.signUpPassword === "") { //Checking for password not empty
       signUpPasswordRequired = "dispBlock";
       signUpFormValid = false;
     }
     if (this.state.signUpPassword !== "") {
-      if (!this.isValidPassword(this.state.signUpPassword)) { 
+      if (!this.isValidPassword(this.state.signUpPassword)) { //Checking for password strength
         validPasswordHelpText = "dispBlock"
         signUpFormValid = false;
 
@@ -443,7 +471,7 @@ class Header extends Component {
 
   }
 
- 
+  //This method is called to check the password strength.
   isValidPassword = (password) => {
     let lowerCase = false;
     let upperCase = false;
@@ -479,7 +507,7 @@ class Header extends Component {
     return false;
   }
 
-
+  //This method handles the snackbar close.
   snackBarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -491,15 +519,18 @@ class Header extends Component {
     })
   }
 
+  // This method is called when the customer clicks log out from the profile menu
+  //This method inturn uses logout endpoint to log out the customer
+  //Also while log out clears all the session data
   onLogOutClickHandler = () => {
     let logoutData = null;
     let that = this
     let xhrLogout = new XMLHttpRequest();
     xhrLogout.addEventListener("readystatechange", function () {
       if (xhrLogout.readyState === 4 && xhrLogout.status === 200) {
-        sessionStorage.removeItem("uuid"); 
-        sessionStorage.removeItem("access-token"); 
-        sessionStorage.removeItem("customer-name"); 
+        sessionStorage.removeItem("uuid"); //Clearing uuid
+        sessionStorage.removeItem("access-token"); //Clearing access-token
+        sessionStorage.removeItem("customer-name"); //Clearing customer-name
         that.setState({
           ...that.state,
           loggedIn: false,
@@ -521,7 +552,7 @@ class Header extends Component {
   }
 
   render() {
- 
+    // Styles are stored in the const classes
     const { classes } = this.props;
     return (
         <div>
@@ -539,6 +570,7 @@ class Header extends Component {
                         </span>
             }
 
+            {/* Checks for loggedIn if not then displays the login button else profile button */}
 
             {this.state.loggedIn !== true ?
                 <Button className={classes.loginButton} size="large" variant="contained" onClick={this.loginButtonClickHandler}>
@@ -571,6 +603,8 @@ class Header extends Component {
               <Tab label="SIGNUP" className={classes.tab} />
             </Tabs>
 
+            {/* Checking for value based on the value the tabs are shown */}
+            {/* login form */}
             {this.state.value === 0 &&
             <TabContainer>
               <FormControl required className={classes.formControl}>
@@ -605,7 +639,7 @@ class Header extends Component {
               <Button variant="contained" className={classes.formButton} color="primary" onClick={this.loginClickHandler}>LOGIN</Button>
             </TabContainer>
             }
-
+            {/* Signup Form  */}
             {this.state.value === 1 &&
             <TabContainer>
               <FormControl required className={classes.formControl}>
