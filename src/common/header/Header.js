@@ -518,11 +518,13 @@ class Header extends Component {
     return (
       <div>
         <header className="app-header">
-          <FastfoodIcon
-            className="app-logo"
-            fontSize="large"
-            htmlColor="white"
-          />
+          <Link to="/" className="app-logo">
+            <FastfoodIcon
+              className="app-logo"
+              fontSize="large"
+              htmlColor="white"
+            />
+          </Link>
           {this.props.showHeaderSearchBox === true && (
             <span className="header-searchbox">
               <Input
